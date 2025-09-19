@@ -31,12 +31,12 @@ int MyStringClass::get_string_length(const char* tocheck)
 
 void MyStringClass::init_string(char* toinit, int length)
 {
-  std::cout << "addr:" << &toinit << std::endl;
+  //std::cout << "addr:" << &toinit << std::endl;
   for(int i = 0; i < length-1; ++i)
   {
-    std::cout << "before:" << toinit[i];
+    //std::cout << "before:" << (unsigned short)(toinit[i]);
     toinit[i] = (char)0xFFu; // fill up array with [1]s
-    std::cout << "after:" << toinit[i] << std::endl;
+    //std::cout << "after:" << (unsigned short)(toinit[i]) << std::endl;
   }
   toinit[length-1] = '\0'; // don't forget null-terminator
 }
@@ -86,12 +86,17 @@ MyStringClass& MyStringClass::append(const char* toappend)
   return *this;
 }
 
-void MyStringClass::print(void)
+void MyStringClass::print(void) const
 {
   std::cout << this->MyString; // don't print newline (\n)
 }
 
-const char* MyStringClass::c_str(void)
+const char* MyStringClass::c_str(void) const
 {
     return (const char*)this->MyString;
+}
+
+int MyStringClass::length(void)
+{
+  return this->MyLength;
 }

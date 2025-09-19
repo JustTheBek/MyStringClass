@@ -1,4 +1,4 @@
-//#define UNIT_TEST
+#define UNIT_TEST
 
 #include "MyStringClass.h"
 #include <gtest/gtest.h>
@@ -43,26 +43,28 @@ class MyStringClassTest : public testing::Test
 };
 
 // Tests that initsring fills up char array with [1]s and the last field with '\0'.
-/*TEST_F(MyStringClassTest, Test_MyStringClass_Initsring) 
+TEST_F(MyStringClassTest, Test_MyStringClass_Initsring) 
 {
    // 1 Setup
-   char testarray [5] = "abcd";
-   char exptected [5] = "\xFF\xFF\xFF\xFF";
+   char testarray [] = "abcd";
+   char exptected [] = "\xFF\xFF\xFF\xFF";
+   char* p = testarray;
+   long addr = (long)p;
    MyStringClass myTestString("Hello"); // used only for function call
 
-   std::cout << "Act" << std::endl;
+   //std::cout << "Act" << std::endl;
    // 2 Act
    // no act is needed, the setup contained the action
-   std::cout << "addr:" << long(&testarray[0]) << std::endl;
-   myTestString.init_string(&testarray[0], 5);
+   //std::cout << "addr:0x" << std::hex << addr << std::endl;
+   MyStringClass::init_string(p, 5); //TODO: talk with prof, why does this cause segfault
 
-
-   std::cout << "Exp" << std::endl;
+   //std::cout << "Exp" << std::endl;
 
    // 3 Expect
    EXPECT_STREQ(&testarray[0], &exptected[0]);
+   //EXPECT_EQ(1,1);
 }
-*/
+
 // Tests that constructor (with const char*) works properly.
 TEST_F(MyStringClassTest, Test_MyStringClass_ConstCharPtrConstructor) 
 {
@@ -74,6 +76,35 @@ TEST_F(MyStringClassTest, Test_MyStringClass_ConstCharPtrConstructor)
 
    // 3 Expect
    EXPECT_STREQ(myTestString.c_str(), "Hello");
+}
+
+// Tests that c_str() works properly (this is a getter for the private string)
+TEST_F(MyStringClassTest, Test_MyStringClass_GetPrivateString) 
+{
+   // 1 Setup
+   char testring [] = "This_Is_My_TestString";
+   MyStringClass myTestString(testring);
+
+   // 2 Act
+   const char* result = myTestString.c_str();
+
+   // 3 Expect
+   EXPECT_STREQ(result, testring);
+}
+
+// Tests that length() works properly (this is a getter for the length excl. null-termiantor)
+TEST_F(MyStringClassTest, Test_MyStringClass_GetLength) 
+{
+   // 1 Setup
+   char testring [] = "This_Is_My_New_TestString";
+   int test_length = sizeof(testring)/sizeof(char);
+   MyStringClass myTestString(testring);
+
+   // 2 Act
+   int res = myTestString.length();
+
+   // 3 Expect
+   EXPECT_EQ(test_length-1, res); // null-terminator is not counted to length()
 }
 
 // Tests that append works properly.
@@ -88,6 +119,7 @@ TEST_F(MyStringClassTest, Test_MyStringClass_Append)
    // 3 Expect
    EXPECT_STREQ(myTestString.c_str(), "Hello World!");
 }
+
 
 }  // namespace
 }  // namespace project

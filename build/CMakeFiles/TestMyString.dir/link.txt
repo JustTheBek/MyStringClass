@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/TestMyString.dir/testrunner.cpp.o -o TestMyString  MyStringClass/libMyStringClass.a -Wl,-Bstatic -lgtest -Wl,-Bdynamic 
