@@ -1,2 +1,0 @@
-/usr/bin/ar qc libMyStringClass.a CMakeFiles/MyStringClass.dir/MyStringClass.cpp.o
-/usr/bin/ranlib libMyStringClass.a

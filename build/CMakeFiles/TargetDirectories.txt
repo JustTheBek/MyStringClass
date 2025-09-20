@@ -1,6 +1,0 @@
-/home/just_the_bek/Documents/FHTW_MAI/MyStringClass/build/CMakeFiles/TestMyString.dir
-/home/just_the_bek/Documents/FHTW_MAI/MyStringClass/build/CMakeFiles/edit_cache.dir
-/home/just_the_bek/Documents/FHTW_MAI/MyStringClass/build/CMakeFiles/rebuild_cache.dir
-/home/just_the_bek/Documents/FHTW_MAI/MyStringClass/build/MyStringClass/CMakeFiles/MyStringClass.dir
-/home/just_the_bek/Documents/FHTW_MAI/MyStringClass/build/MyStringClass/CMakeFiles/edit_cache.dir
-/home/just_the_bek/Documents/FHTW_MAI/MyStringClass/build/MyStringClass/CMakeFiles/rebuild_cache.dir
