@@ -1,3 +1,5 @@
-# Ignore build folder
+# Ignore build and coverage folders
 build/ 
 build/**
+coverage/
+coverage/** */

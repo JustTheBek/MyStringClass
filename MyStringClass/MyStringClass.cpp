@@ -16,9 +16,32 @@ MyStringClass::MyStringClass(const char* initstring)
   //std::cout << "Created new instance of MyStringClass:" << this->MyString << "\n";
 }
 
+// deep-copy constructor
+MyStringClass::MyStringClass(const MyStringClass& initstring)
+{
+  this->MyString = new char[initstring.MyLength+1]; // considering null-terminator
+
+  init_string(this->MyString, initstring.MyLength+1);
+
+  copy_string_from_to(initstring.MyString, this->MyString);
+
+  this->MyLength = initstring.MyLength;
+}
+
+// move constructor
+MyStringClass::MyStringClass(MyStringClass&& initstring)
+{
+  this->MyString = initstring.MyString;
+  this->MyLength = initstring.MyLength;
+
+  initstring.MyString = nullptr;
+  initstring.MyLength = 0;
+}
+
 MyStringClass::~MyStringClass()
 {
-
+  //std::cout << "Descructor call for: " << this->MyString << std::endl;
+  delete[] this->MyString;
 }
 
 int MyStringClass::get_string_length(const char* tocheck)
@@ -79,7 +102,7 @@ MyStringClass& MyStringClass::append(const char* toappend)
   copy_string_from_to(temp, this->MyString);
   copy_string_from_to(toappend, &this->MyString[this->MyLength]);
 
-  this->MyLength = newlen;
+  this->MyLength = newlen - 1; // don't count null-terminator
 
   delete[] temp;
 
@@ -99,4 +122,66 @@ const char* MyStringClass::c_str(void) const
 int MyStringClass::length(void)
 {
   return this->MyLength;
+}
+
+// deep-copy assignment operator
+MyStringClass& MyStringClass::operator=(const MyStringClass& rhs)
+{
+  this->MyLength = rhs.MyLength;
+
+  delete [] this->MyString;
+  this->MyString = new char[rhs.MyLength+1]; // considering null-terminator
+
+  init_string(this->MyString, rhs.MyLength+1);
+
+  copy_string_from_to(rhs.MyString, this->MyString);
+
+  return *this;
+}
+
+// move assignment operator
+MyStringClass& MyStringClass::operator=(MyStringClass&& rhs)
+{
+  this->MyLength = rhs.MyLength;
+
+  delete [] this->MyString;
+  this->MyString = rhs.MyString;
+  rhs.MyString = nullptr;
+  rhs.MyLength = 0;
+
+  return *this;
+}
+
+MyStringClass& MyStringClass::operator+=(const MyStringClass& rhs)  // add-assign operator with deep-copy
+{
+  this->append(rhs.MyString);
+
+  return *this;
+}
+
+MyStringClass& MyStringClass::operator+=(const char* rhs)  // add-assign operator for cstring with deep-copy
+{
+  this->append(rhs);
+
+  return *this;
+}
+
+MyStringClass MyStringClass::operator+(const MyStringClass& rhs)  // addition operator
+{
+  return MyStringClass(*this) += rhs;
+}
+
+MyStringClass MyStringClass::operator+(const char* rhs)  // addition operator for cstring
+{
+  return MyStringClass(*this) += rhs;
+}
+
+MyStringClass::operator const char*() const // conversion operator for const char*
+{
+  int newlen = this->MyLength+1;
+  char* newchar = new char[this->MyLength+1]; // consider null-terminator
+  init_string(newchar, newlen);
+  copy_string_from_to(this->MyString, &newchar[0]);
+
+  return newchar;
 }
